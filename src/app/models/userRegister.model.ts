@@ -1,5 +1,5 @@
 export class UserRegister {
-    constructor(username: String,password:string, confirmedPassword: string){
+    constructor(public username: String,public password:string, public confirmedPassword: string){
 
     }
 }

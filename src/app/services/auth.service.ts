@@ -1,3 +1,4 @@
+import { UserRegister } from './../models/userRegister.model';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, tap } from "rxjs/operators";
@@ -14,7 +15,12 @@ export class AuthService {
   get userIsAuthenticated() {
     return this._userIsAuthenticated;
   }
-  register()
+  register(userRegister: UserRegister) {
+    return this.http.post(
+      'http://localhost:8989/register',{'username':userRegister.username,'password':userRegister.password, 'confirmedPassword': userRegister.confirmedPassword},{observe: 'response'}
+    )
+
+  }
 
   authenticate(usename: string, password: string){
     return this.http.post(
@@ -39,6 +45,11 @@ export class AuthService {
       token: token,
     });
     Plugins.Storage.set({ key: "authData", value: data });
+  }
+  ajouterUserBackEnd(username: String, idFonctionnelUser: string ){
+    return this.http.post(
+      'http://localhost:9090/ajouterUser',{'username':username,'idFonctionnelUser':idFonctionnelUser},{observe: 'response'}
+    )
   }
   
 
