@@ -3,6 +3,7 @@ import { AuthService } from "./../services/auth.service";
 import { AlertController } from "@ionic/angular";
 import { Component, OnInit } from "@angular/core";
 import { Form, NgForm } from "@angular/forms";
+import { Router } from '@angular/router';
 
 @Component({
   selector: "app-register",
@@ -12,7 +13,8 @@ import { Form, NgForm } from "@angular/forms";
 export class RegisterPage implements OnInit {
   constructor(
     private alertCtrl: AlertController,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit() {}
@@ -37,19 +39,21 @@ export class RegisterPage implements OnInit {
         console.log(response.body);
         this.authService
           .ajouterUserBackEnd(
-            response.body["idFonctionnel"],
-            response.body["username"]
+            response.body["username"],
+            response.body["idFonctionnel"]
           )
           .subscribe(
             (response) => {
-              console.log(response);
+              this.router.navigateByUrl('/auth')
             },
             (error) => {
+              this.showAlert('Erreur technique',' Veuillez contacter votre administrateur');
               console.log(error);
             }
           );
       },
       (error) => {
+        this.showAlert('Erreur technique',' Veuillez contacter votre administrateur');
         console.log(error);
       }
     );

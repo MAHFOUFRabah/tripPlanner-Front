@@ -33,6 +33,7 @@ export class AuthService {
     this._userIsAuthenticated = true;
   }
   logout() {
+    Plugins.Storage.remove({ key: "authData" });
     this._userIsAuthenticated = false;
   }
    sauvegarderAuthData(
@@ -48,7 +49,7 @@ export class AuthService {
   }
   ajouterUserBackEnd(username: String, idFonctionnelUser: string ){
     return this.http.post(
-      'http://localhost:9090/ajouterUser',{'username':username,'idFonctionnelUser':idFonctionnelUser},{observe: 'response'}
+      'http://localhost:9090/ajouterUser',{'username':username, 'idFonctionnelUser':idFonctionnelUser},{observe: 'response'}
     )
   }
   

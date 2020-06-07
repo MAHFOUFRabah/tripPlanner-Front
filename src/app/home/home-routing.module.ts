@@ -14,6 +14,10 @@ const routes: Routes = [
   {
     path: 'rejoindre-voyage',
     loadChildren: () => import('./rejoindre-voyage/rejoindre-voyage.module').then( m => m.RejoindreVoyagePageModule)
+  },
+  {
+    path: 'detail-voyage/:idVoyage',
+    loadChildren: () => import('./detail-voyage/detail-voyage.module').then( m => m.DetailVoyagePageModule)
   }
 ];
 
