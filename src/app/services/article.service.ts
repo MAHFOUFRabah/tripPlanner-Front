@@ -17,7 +17,6 @@ import {  tap } from 'rxjs/operators';
           return this._articles.asObservable();
       }
 fetchArticlesDuVoyage(idVoyage:string, username:string, token:string) {
-    console.log(`${environment.UrlVoyageBackEnd}/tousArticle/${idVoyage}/${username}`)
     return this.http.get<Article[]>(
       `${environment.UrlVoyageBackEnd}/tousArticle/${idVoyage}/${username}`,  { headers: { Authorization: token  } }
     ).pipe(tap(articles =>{
@@ -29,6 +28,14 @@ fetchArticlesDuVoyage(idVoyage:string, username:string, token:string) {
     return this.http.post<Article>(
         `${environment.UrlVoyageBackEnd}/unArticle/${idVoyage}`, articleCree, { headers: { Authorization: token  } }
       )
+    }
+
+    supprimerUnArticle(idArticle : string, token: string) {
+        return this.http.delete<void>(`${environment.UrlVoyageBackEnd}/unArticle/${idArticle}`, { headers: { Authorization: token } })
+    }
+    ajouterUnArticleAuFavorisDb(idArticle: string, username: string, token: string) {
+        
+        return this.http.post<Article>(`${environment.UrlVoyageBackEnd}/unArticleFavori/${idArticle}/${username}`, null,{ headers: { Authorization: token } })
     }
 
   }

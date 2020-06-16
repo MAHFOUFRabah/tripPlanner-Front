@@ -31,9 +31,9 @@ export class VoyagesService {
     }
 
     ajouterVoyage(nomVoyage:string,username:string, token:string) {
-        const voyageCree = new Voyage(username,null,null,null,nomVoyage);
+        const voyageCree = new Voyage(null,null,null,nomVoyage);
         return this.http.post<Voyage>(
-            `${environment.UrlVoyageBackEnd}/oneTrip`, voyageCree, { headers: { Authorization: token  } }
+            `${environment.UrlVoyageBackEnd}/oneTrip/${username}`, voyageCree, { headers: { Authorization: token  } }
           )
 
     }
@@ -54,6 +54,18 @@ export class VoyagesService {
   
       })
     }
+    suprimerUnVoyage(idVoyage: String,username:string, token: string){
+      return this.http.delete<void>(
+        `${environment.UrlVoyageBackEnd}/oneTrip/${username}/${idVoyage}`, { headers: { Authorization: token  } }
+      )
+    }
+    renomerUnVoyage(voyage: Voyage, token: string){
+      const voyageModifie = new Voyage(voyage.codeBarre, voyage.idVoyage, voyage.items, 'toto')
+      return this.http.put<Voyage>(
+        `${environment.UrlVoyageBackEnd}/oneTrip/${voyage.idVoyage}`, voyageModifie, { headers: { Authorization: token  } }
+      )
+    }
+
   }
 
 

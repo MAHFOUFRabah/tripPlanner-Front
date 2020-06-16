@@ -32,4 +32,7 @@ export class AppComponent {
     this.authService.logout();
     this.router.navigateByUrl('/auth')
   }
+  onGererVoyage(){
+  this.router.navigateByUrl('/setting')
+  }
 }

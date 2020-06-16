@@ -1,5 +1,7 @@
 {
   "name": "tripPlanner",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

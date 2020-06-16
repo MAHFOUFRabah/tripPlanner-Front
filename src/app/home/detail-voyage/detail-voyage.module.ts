@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { DetailVoyagePageRoutingModule } from './detail-voyage-routing.module';
 
 import { DetailVoyagePage } from './detail-voyage.page';
+import { Clipboard } from '@ionic-native/clipboard/ngx';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { DetailVoyagePage } from './detail-voyage.page';
     IonicModule,
     DetailVoyagePageRoutingModule
   ],
-  declarations: [DetailVoyagePage]
+  declarations: [DetailVoyagePage],
+  providers: [Clipboard]
 })
 export class DetailVoyagePageModule {}
