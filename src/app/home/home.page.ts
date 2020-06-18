@@ -31,6 +31,7 @@ export class HomePage {
       this.voyageService.fetchVoyages(dataAuth.userId,dataAuth.token ).subscribe(
         (data) => {
           this.voyages = data;
+          console.log(data)
           this.isLoading = false;
         },
         (error) => {

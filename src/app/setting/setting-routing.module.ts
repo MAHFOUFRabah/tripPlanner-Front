@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: SettingPage
+  },
+  {
+    path: 'renommer-voyage/:idVoyage',
+    loadChildren: () => import('./renommer-voyage/renommer-voyage.module').then( m => m.RenommerVoyagePageModule)
   }
 ];
 

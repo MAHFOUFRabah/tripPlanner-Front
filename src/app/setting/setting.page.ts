@@ -4,13 +4,14 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { Plugins } from '@capacitor/core';
 import { AlertController, ActionSheetController } from '@ionic/angular';
 import { error } from 'protractor';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-setting',
   templateUrl: './setting.page.html',
   styleUrls: ['./setting.page.scss'],
 })
-export class SettingPage implements OnInit {
+export class SettingPage   {
   voyages: Voyage[];
   isLoading = true;
   token: string;
@@ -19,9 +20,10 @@ export class SettingPage implements OnInit {
   constructor(private voyageService:VoyagesService,
     private alertCtrl:AlertController,
     private actionSheetCtrl:ActionSheetController,
-    private ngZone: NgZone) { }
+    private ngZone: NgZone,
+    private router: Router) { }
 
-  ngOnInit() {
+    ionViewWillEnter() {
     Plugins.Storage.get({ key: "authData" }).then(storedData => {
       const dataAuth = JSON.parse(storedData.value) as {
         token: string;
@@ -65,7 +67,7 @@ export class SettingPage implements OnInit {
           text: "Renommer le voyage ",
           icon: 'create',
           handler: () => {
-            this.renomerLeVoyageCtrl(voyage, this.token);
+            this.router.navigateByUrl(`/setting/renommer-voyage/${voyage.idVoyage}`)
           },
         },
         {
@@ -87,9 +89,7 @@ export class SettingPage implements OnInit {
       actionsheetEl.present();
     });
   }
-  renomerLeVoyageCtrl(voyage: Voyage, token: string) {
-    this.voyageService.renomerUnVoyage(voyage, token).subscribe(reponse => {}, erreur => {console.log(erreur)})
-  }
+  
   supprimerLeVoyageCtrl(voyage: Voyage, token: string){
     this.voyageService.suprimerUnVoyage(voyage.idVoyage, this.userId,token).subscribe(reponse => {
       this.ngZone.run(() => {

@@ -1,3 +1,5 @@
+import { Voyage } from './../../models/voyage.model';
+import { VoyagesService } from './../../services/voyage.service';
 import { ActionSheetController, AlertController } from "@ionic/angular";
 import { Component, OnInit, NgZone } from "@angular/core";
 import { ArticleService } from "src/app/services/article.service";
@@ -6,6 +8,8 @@ import { NavController } from "@ionic/angular";
 import { Plugins } from "@capacitor/core";
 import { Article } from "src/app/models/article.model";
 import { Clipboard } from "@ionic-native/clipboard/ngx";
+import { SegmentChangeEventDetail } from '@ionic/core';
+
 
 @Component({
   selector: "app-detail-voyage",
@@ -15,6 +19,9 @@ import { Clipboard } from "@ionic-native/clipboard/ngx";
 export class DetailVoyagePage implements OnInit {
   token: string;
   articles: Article[];
+  tousArticles: Article[]
+  articlesFavoris: Article[]
+  voyageDetail: Voyage;
   isLoading = false;
   idVoyage: string;
   userId: string;
@@ -22,6 +29,7 @@ export class DetailVoyagePage implements OnInit {
   constructor(
     private clipboard: Clipboard,
     private articleService: ArticleService,
+    private voyageService: VoyagesService,
     private route: ActivatedRoute,
     private navCtrl: NavController,
     private router: Router,
@@ -44,7 +52,7 @@ export class DetailVoyagePage implements OnInit {
             text: "Copier le code du voyage ",
             icon: "checkmark",
             handler: () => {
-              this.clipboard.copy('Hello world').then(rs => {
+              this.clipboard.copy(this.voyageDetail.codeBarre).then(rs => {
                 alert(rs);
               }).catch(error => {
                 alert(error);
@@ -55,7 +63,7 @@ export class DetailVoyagePage implements OnInit {
           },
           {
             text: "Ajouter un article",
-            icon: "trash",
+            icon: "add",
             handler: () => {
               this.router.navigateByUrl(
                 `/home/detail-voyage/${this.idVoyage}/ajouter-article`
@@ -230,12 +238,26 @@ export class DetailVoyagePage implements OnInit {
         this.idVoyage = paramMap.get("idVoyage");
         this.token = dataAuth.token;
         this.userId = dataAuth.userId;
-        this.articleService
-          .fetchArticlesDuVoyage(this.idVoyage, dataAuth.userId, dataAuth.token)
+        /*this.articleService
+          .fetchArticlesDuVoyage(this.idVoyage, dataAuth.userId, dataAuth.token)*/
+          this.voyageService.recupererUnVoyage(this.idVoyage,this.token)
           .subscribe((reponse) => {
-            this.articles = reponse;
+            this.voyageDetail = reponse
+            this.articles = reponse.items;
+            this.tousArticles = reponse.items;
+            this.articlesFavoris = this.tousArticles.filter(article => article.appartientA === this.userId)
           });
       });
     });
+  }
+  onFilterUpdate(event: CustomEvent<SegmentChangeEventDetail>) {
+    
+   
+      if (event.detail.value === 'all') {
+        this.articles =this.tousArticles
+  
+      } else {
+        this.articles =this.articlesFavoris
+      }
   }
 }

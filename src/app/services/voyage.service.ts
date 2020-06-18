@@ -59,10 +59,15 @@ export class VoyagesService {
         `${environment.UrlVoyageBackEnd}/oneTrip/${username}/${idVoyage}`, { headers: { Authorization: token  } }
       )
     }
-    renomerUnVoyage(voyage: Voyage, token: string){
-      const voyageModifie = new Voyage(voyage.codeBarre, voyage.idVoyage, voyage.items, 'toto')
+    renomerUnVoyage(idVoyage: String, nouveauNomDuVoyage: String, token: string){
+      
       return this.http.put<Voyage>(
-        `${environment.UrlVoyageBackEnd}/oneTrip/${voyage.idVoyage}`, voyageModifie, { headers: { Authorization: token  } }
+        `${environment.UrlVoyageBackEnd}/oneTrip/${idVoyage}/${nouveauNomDuVoyage}`, null, { headers: { Authorization: token  } }
+      )
+    }
+    recupererUnVoyage(idVoyage: string, token: string) {
+      return this.http.get<Voyage>(
+        `${environment.UrlVoyageBackEnd}/oneTrip/${idVoyage}`,  { headers: { Authorization: token  } }
       )
     }
 
